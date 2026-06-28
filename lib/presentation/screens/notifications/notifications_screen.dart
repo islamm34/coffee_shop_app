@@ -4,10 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/routes/router.dart';
-
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
-
   @override
   State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
