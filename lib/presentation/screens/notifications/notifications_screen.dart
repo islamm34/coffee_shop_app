@@ -9,7 +9,6 @@ class NotificationsScreen extends StatefulWidget {
   @override
   State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
-
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final List<Map<String, dynamic>> _notifications = [
     {'title': 'Order Delivered', 'message': 'Your order #12345 has been delivered successfully.', 'time': '5 min ago', 'isRead': false, 'icon': 'package'},
