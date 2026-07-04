@@ -1,11 +1,11 @@
 // lib/presentation/screens/forgot_password/forgot_password_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/routes/router.dart';
 import '../../widgets/buttons/primary_button.dart';
 import '../../widgets/animations/fade_animation.dart';
+import '../../../core/theme/app_theme.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -21,9 +21,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: context.backgroundColor,
         elevation: 0,
         leading: IconButton(
           onPressed: () {
@@ -33,52 +33,47 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             'https://api.iconify.design/lucide/arrow-left.svg',
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              Color(0xFF4E342E),
+            colorFilter: ColorFilter.mode(
+              context.primaryColor,
               BlendMode.srcIn,
             ),
           ),
         ),        title: Text(
           'Reset Password',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF2D2A26),
+          style: AppTextStyles.titleMedium.copyWith(
+            color: context.textPrimary,
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: AppSpacing.paddingXxl,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 24),
+            AppSpacing.gapXxl,
             Text(
               'Enter your email',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF2D2A26),
+              style: AppTextStyles.displaySmall.copyWith(
+                color: context.textPrimary,
               ),
             ),
-            const SizedBox(height: 8),
+            AppSpacing.gapSm,
             Text(
               'We\'ll send you a reset link to your email',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: const Color(0xFF7D6E63),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: context.textSecondary,
               ),
             ),
-            const SizedBox(height: 32),
+            AppSpacing.gapXxl,
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Email Address',
-                prefixIcon: Icon(Icons.email_outlined, color: Color(0xFF7D6E63)),
+                prefixIcon: Icon(Icons.email_outlined, color: context.textSecondary),
               ),
             ),
-            const SizedBox(height: 24),
+            AppSpacing.gapXxl,
             PrimaryButton(
               text: 'Send Instructions',
               onPressed: () {
@@ -89,13 +84,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               fullWidth: true,
             ),
             if (_isEmailSent) ...[
-              const SizedBox(height: 16),
+              AppSpacing.gapLg,
               FadeAnimation(
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: AppSpacing.paddingLg,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5E9),
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.successLight.withValues(alpha: 0.2),
+                    borderRadius: AppRadius.mdRadius,
                   ),
                   child: Row(
                     children: [
@@ -104,17 +99,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         width: 24,
                         height: 24,
                         colorFilter: const ColorFilter.mode(
-                          Color(0xFF4CAF50),
+                          AppColors.success,
                           BlendMode.srcIn,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      AppSpacing.gapHorizontalMd,
                       Expanded(
                         child: Text(
                           'Reset link sent to your email',
-                          style: GoogleFonts.poppins(
-                            color: const Color(0xFF2E7D32),
-                            fontSize: 14,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.success,
                           ),
                         ),
                       ),
@@ -125,7 +119,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ],
             const Spacer(),
             ClipRRect(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: AppRadius.xxlRadius,
               child: Image.network(
                 'https://picsum.photos/seed/forgotPassword/400/200',
                 height: 120,
@@ -135,17 +129,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   return Container(
                     height: 120,
                     width: double.infinity,
-                    color: const Color(0xFFF8F5F2),
-                    child: const Icon(
+                    color: context.backgroundColor,
+                    child: Icon(
                       Icons.coffee,
-                      color: Color(0xFFC89B6D),
+                      color: context.secondaryColor,
                       size: 40,
                     ),
                   );
                 },
               ),
             ),
-            const SizedBox(height: 16),
+            AppSpacing.gapLg,
           ],
         ),
       ),

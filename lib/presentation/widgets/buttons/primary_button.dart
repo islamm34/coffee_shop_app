@@ -1,6 +1,8 @@
-// lib/presentation/widgets/buttons/primary_button.dart
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_dimensions.dart';
+import '../../../core/theme/app_radius.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -9,6 +11,9 @@ class PrimaryButton extends StatelessWidget {
   final bool isLoading;
   final double? width;
   final double? height;
+  final IconData? icon;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   const PrimaryButton({
     super.key,
@@ -18,39 +23,46 @@ class PrimaryButton extends StatelessWidget {
     this.isLoading = false,
     this.width,
     this.height,
+    this.icon,
+    this.backgroundColor,
+    this.foregroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: fullWidth ? double.infinity : width,
-      height: height ?? 56,
-      child: ElevatedButton(
+      height: height ?? AppDimensions.buttonHeightLg,
+      child: ElevatedButton.icon(
         onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF4E342E),
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shadowColor: const Color(0xFF4E342E).withOpacity(0.3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-        ),
-        child: isLoading
+        icon: isLoading
             ? const SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          ),
-        )
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : icon != null
+                ? Icon(icon)
+                : const SizedBox.shrink(),
+        label: isLoading
+            ? const SizedBox.shrink()
             : Text(
-          text,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+                text,
+                style: AppTextStyles.button,
+              ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor:
+              backgroundColor ?? Theme.of(context).colorScheme.primary,
+          foregroundColor: foregroundColor ?? Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: AppRadius.xxlRadius,
           ),
+          disabledBackgroundColor: AppColors.lightTextDisabled,
+          disabledForegroundColor: Colors.white,
         ),
       ),
     );

@@ -45,7 +45,7 @@ class OffersScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            context.go(AppRoutes.profile);
+            context.go(AppRoutes.home);
           },
           icon: SvgPicture.network(
             'https://api.iconify.design/lucide/arrow-left.svg',

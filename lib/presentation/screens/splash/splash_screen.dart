@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
-  late Animation<double> _steamAnimation;
 
   @override
   void initState() {
@@ -38,10 +37,6 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
     );
 
-    _steamAnimation = Tween<double>(begin: 0.0, end: -20.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-
     _animationController.forward();
   }
 
@@ -56,124 +51,147 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2D1B14),
-              Color(0xFF4E342E),
-              Color(0xFF3E2723),
-            ],
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&h=800&fit=crop',
+            ),
+            fit: BoxFit.cover,
           ),
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FadeAnimation(
-                          animation: _fadeAnimation,
-                          child: ScaleAnimation(
-                            animation: _scaleAnimation,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(32),
-                                  child: Image.network(
-                                    'https://picsum.photos/seed/coffeeCup/400/400',
-                                    width: 200,
-                                    height: 200,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 200,
-                                        height: 200,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF4E342E),
-                                          borderRadius: BorderRadius.circular(32),
-                                        ),
-                                        child: const Icon(
-                                          Icons.coffee,
-                                          color: Colors.white,
-                                          size: 80,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Positioned(
-                                  top: -10,
-                                  child: AnimatedBuilder(
-                                    animation: _steamAnimation,
-                                    builder: (context, child) {
-                                      return Transform.translate(
-                                        offset: Offset(0, _steamAnimation.value),
-                                        child: Opacity(
-                                          opacity: 0.6,
-                                          child: SvgPicture.network(
-                                            'https://api.iconify.design/lucide/coffee.svg?color=white&width=48&height=48',
-                                            width: 48,
-                                            height: 48,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Colors.black.withOpacity(0.85),
+                Colors.black.withOpacity(0.6),
+                Colors.black.withOpacity(0.3),
+                Colors.black.withOpacity(0.1),
+                Colors.transparent,
+              ],
+              stops: const [0.0, 0.3, 0.5, 0.7, 1.0],
+            ),
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+
+                    // Logo أو أيقونة القهوة
+                  FadeAnimation(
+                    animation: _fadeAnimation,
+                    child: ScaleAnimation(
+                      animation: _scaleAnimation,
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.3),
+                            width: 2,
                           ),
                         ),
-                        const SizedBox(height: 32),
-                        FadeAnimation(
-                          animation: _fadeAnimation,
-                          delay: 0.3,
-                          child: Text(
-                            'Brew Coffee',
-                            style: GoogleFonts.poppins(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 1.5,
-                            ),
+                        child: Center(
+                          child: SvgPicture.network(
+                            'https://api.iconify.design/lucide/coffee.svg?color=white&width=40&height=40',
+                            width: 40,
+                            height: 40,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        FadeAnimation(
-                          animation: _fadeAnimation,
-                          delay: 0.5,
-                          child: Text(
-                            'Every sip tells a story',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: Colors.white70,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                FadeAnimation(
-                  animation: _fadeAnimation,
-                  delay: 0.7,
-                  child: PrimaryButton(
-                    text: 'Get Started',
-                    onPressed: () {
-                      context.go(AppRoutes.onboarding);
-                    },
+
+                  const SizedBox(height: 40),
+
+                  // عنوان التطبيق
+                  FadeAnimation(
+                    animation: _fadeAnimation,
+                    delay: 0.3,
+                    child: Text(
+                      'Brew Coffee',
+                      style: GoogleFonts.poppins(
+                        fontSize: 42,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 2,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-              ],
+
+                  const SizedBox(height: 12),
+
+                  // النص التحت عنوان
+                  FadeAnimation(
+                    animation: _fadeAnimation,
+                    delay: 0.5,
+                    child: Text(
+                      'Every sip tells a story',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.white70,
+                        letterSpacing: 1,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                  // زر البدء
+                  FadeAnimation(
+                    animation: _fadeAnimation,
+                    delay: 0.7,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: PrimaryButton(
+                        text: 'Get Started',
+                        onPressed: () {
+                          context.go(AppRoutes.onboarding);
+                        },
+                        fullWidth: true,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // رقم الإصدار
+                  FadeAnimation(
+                    animation: _fadeAnimation,
+                    delay: 0.9,
+                    child: Text(
+                      'Version 1.0.0',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.white38,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+                ],
+              ),
             ),
           ),
         ),

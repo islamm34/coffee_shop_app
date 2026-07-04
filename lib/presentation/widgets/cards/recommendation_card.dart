@@ -1,6 +1,6 @@
 // lib/presentation/widgets/cards/recommendation_card.dart
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/app_theme.dart';
 
 class RecommendationCard extends StatelessWidget {
   final String name;
@@ -20,17 +20,11 @@ class RecommendationCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 140,
-        margin: const EdgeInsets.only(right: 12),
+        margin: EdgeInsets.only(right: AppSpacing.md),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          color: context.cardBackground,
+          borderRadius: AppRadius.xxlRadius,
+          boxShadow: AppShadows.cardShadow,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,10 +42,10 @@ class RecommendationCard extends StatelessWidget {
                   return Container(
                     height: 100,
                     width: double.infinity,
-                    color: const Color(0xFFF8F5F2),
-                    child: const Icon(
+                    color: context.backgroundColor,
+                    child: Icon(
                       Icons.image_not_supported,
-                      color: Color(0xFF7D6E63),
+                      color: context.textSecondary,
                       size: 30,
                     ),
                   );
@@ -59,12 +53,11 @@ class RecommendationCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(AppSpacing.md),
               child: Text(
                 name,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF2D2A26),
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: context.textPrimary,
                 ),
               ),
             ),

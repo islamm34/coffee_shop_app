@@ -1,9 +1,11 @@
-// lib/presentation/widgets/buttons/floating_cart_button.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../constants/routes/router.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_shadows.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_dimensions.dart';
 
 class FloatingCartButton extends StatelessWidget {
   final int itemCount;
@@ -20,18 +22,12 @@ class FloatingCartButton extends StatelessWidget {
         context.go(AppRoutes.cart);
       },
       child: Container(
-        width: 60,
-        height: 60,
+        width: AppDimensions.buttonWidthSm,
+        height: AppDimensions.buttonWidthSm,
         decoration: BoxDecoration(
-          color: const Color(0xFF4E342E),
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF4E342E).withOpacity(0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          boxShadow: AppShadows.fabShadow,
         ),
         child: Stack(
           alignment: Alignment.center,
@@ -53,14 +49,13 @@ class FloatingCartButton extends StatelessWidget {
                   width: 20,
                   height: 20,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF44336),
+                    color: AppColors.error,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Text(
                       '$itemCount',
-                      style: GoogleFonts.poppins(
-                        fontSize: 10,
+                      style: AppTextStyles.labelSmall.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

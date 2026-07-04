@@ -1,9 +1,9 @@
 // lib/presentation/screens/categories/categories_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/routes/router.dart';
+import '../../../core/theme/app_theme.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -31,7 +31,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F5F2),
+      backgroundColor: context.backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,38 +44,30 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             'https://api.iconify.design/lucide/arrow-left.svg',
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              Color(0xFF4E342E),
+            colorFilter: ColorFilter.mode(
+              context.primaryColor,
               BlendMode.srcIn,
             ),
           ),
         ),
         title: Text(
           'Categories',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF2D2A26),
+          style: AppTextStyles.titleMedium.copyWith(
+            color: context.textPrimary,
           ),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.paddingLg,
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: AppSpacing.paddingHorizontalLg,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 20,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                color: context.cardBackground,
+                borderRadius: AppRadius.lgRadius,
+                boxShadow: AppShadows.cardShadow,
               ),
               child: TextField(
                 controller: _searchController,
@@ -86,21 +78,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     'https://api.iconify.design/lucide/search.svg',
                     width: 20,
                     height: 20,
-                    colorFilter: const ColorFilter.mode(
-                      Color(0xFF7D6E63),
+                    colorFilter: ColorFilter.mode(
+                      context.textSecondary,
                       BlendMode.srcIn,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            AppSpacing.gapLg,
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
+                  crossAxisSpacing: AppSpacing.lg,
+                  mainAxisSpacing: AppSpacing.lg,
                   childAspectRatio: 0.85,
                 ),
                 itemCount: _categories.length,
@@ -110,15 +102,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     onTap: () {},
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 20,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        color: context.cardBackground,
+                        borderRadius: AppRadius.xxlRadius,
+                        boxShadow: AppShadows.cardShadow,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,10 +122,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 return Container(
                                   height: 120,
                                   width: double.infinity,
-                                  color: const Color(0xFFF8F5F2),
-                                  child: const Icon(
+                                  color: context.backgroundColor,
+                                  child: Icon(
                                     Icons.image_not_supported,
-                                    color: Color(0xFF7D6E63),
+                                    color: context.textSecondary,
                                     size: 40,
                                   ),
                                 );
@@ -147,23 +133,20 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(12),
+                            padding: AppSpacing.paddingMd,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   category['name'],
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF2D2A26),
+                                  style: AppTextStyles.titleSmall.copyWith(
+                                    color: context.textPrimary,
                                   ),
                                 ),
                                 Text(
                                   '${category['count']} items',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    color: const Color(0xFF7D6E63),
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: context.textSecondary,
                                   ),
                                 ),
                               ],

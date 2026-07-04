@@ -1,7 +1,11 @@
-// lib/presentation/widgets/cards/product_card.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_radius.dart';
+import '../../../core/theme/app_shadows.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/app_dimensions.dart';
 
 class ProductCard extends StatelessWidget {
   final String name;
@@ -10,6 +14,10 @@ class ProductCard extends StatelessWidget {
   final String image;
   final VoidCallback onTap;
   final VoidCallback onFavoriteTap;
+  final bool isFavorited;
+  final String? badge;
+  final double? width;
+  final double? height;
 
   const ProductCard({
     super.key,
@@ -19,29 +27,30 @@ class ProductCard extends StatelessWidget {
     required this.image,
     required this.onTap,
     required this.onFavoriteTap,
+    this.isFavorited = false,
+    this.badge,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 180,
-        margin: const EdgeInsets.only(right: 16),
+        width: width ?? AppDimensions.productCardWidth,
+        margin: const EdgeInsets.only(right: AppSpacing.lg),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          color: isDarkMode ? AppColors.darkCard : AppColors.lightCard,
+          borderRadius: AppRadius.xxlRadius,
+          boxShadow: AppShadows.cardShadow,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image Section
             Stack(
               children: [
                 ClipRRect(
@@ -50,50 +59,65 @@ class ProductCard extends StatelessWidget {
                   ),
                   child: Image.network(
                     image,
-                    height: 150,
+                    height: height ?? 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        height: 150,
+                        height: height ?? 150,
                         width: double.infinity,
-                        color: const Color(0xFFF8F5F2),
-                        child: const Icon(
+                        color: isDarkMode
+                            ? AppColors.darkSurface
+                            : AppColors.lightSurface,
+                        child: Icon(
                           Icons.coffee,
-                          color: Color(0xFFC89B6D),
+                          color: Theme.of(context).colorScheme.secondary,
                           size: 40,
                         ),
                       );
                     },
                   ),
                 ),
+                // Favorite Button
                 Positioned(
-                  top: 8,
-                  right: 8,
+                  top: AppSpacing.md,
+                  right: AppSpacing.md,
                   child: GestureDetector(
                     onTap: onFavoriteTap,
                     child: Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: isDarkMode
+                            ? AppColors.darkCard
+                            : AppColors.lightCard,
                         shape: BoxShape.circle,
                       ),
                       child: SvgPicture.network(
-                        'https://api.iconify.design/lucide/heart.svg',
+                        isFavorited
+                            ? 'https://api.iconify.design/lucide/heart.svg?color=red'
+                            : 'https://api.iconify.design/lucide/heart.svg',
                         width: 18,
                         height: 18,
+                        colorFilter: ColorFilter.mode(
+                          isFavorited ? AppColors.error : AppColors.lightTextHint,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ),
                 ),
+                // Rating Badge
                 Positioned(
-                  bottom: 8,
-                  left: 8,
+                  bottom: AppSpacing.md,
+                  left: AppSpacing.md,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                      vertical: AppSpacing.xs,
+                    ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.black.withValues(alpha: 0.7),
+                      borderRadius: AppRadius.mdRadius,
                     ),
                     child: Row(
                       children: [
@@ -106,12 +130,10 @@ class ProductCard extends StatelessWidget {
                             BlendMode.srcIn,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         Text(
-                          rating.toString(),
-                          style: GoogleFonts.poppins(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
+                          rating.toStringAsFixed(1),
+                          style: AppTextStyles.labelSmall.copyWith(
                             color: Colors.white,
                           ),
                         ),
@@ -119,33 +141,59 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                // Optional Badge
+                if (badge != null)
+                  Positioned(
+                    top: AppSpacing.md,
+                    left: AppSpacing.md,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.sm,
+                        vertical: AppSpacing.xs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: AppRadius.mdRadius,
+                      ),
+                      child: Text(
+                        badge!,
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: isDarkMode
+                              ? AppColors.darkTextPrimary
+                              : Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF2D2A26),
-                      fontSize: 14,
+            // Content Section
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: AppTextStyles.titleSmall.copyWith(
+                        color: isDarkMode
+                            ? AppColors.darkTextPrimary
+                            : AppColors.lightTextPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    price,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF4E342E),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      price,
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

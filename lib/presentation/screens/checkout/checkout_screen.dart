@@ -1,10 +1,10 @@
 // lib/presentation/screens/checkout/checkout_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/routes/router.dart';
 import '../../widgets/buttons/primary_button.dart';
+import '../../../core/theme/app_theme.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -45,7 +45,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final total = subtotal + deliveryFee;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F5F2),
+      backgroundColor: context.backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -57,47 +57,37 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'https://api.iconify.design/lucide/arrow-left.svg',
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              Color(0xFF4E342E),
+            colorFilter: ColorFilter.mode(
+              context.primaryColor,
               BlendMode.srcIn,
             ),
           ),
         ),        title: Text(
           'Checkout',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF2D2A26),
+          style: AppTextStyles.titleMedium.copyWith(
+            color: context.textPrimary,
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.paddingLg,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Delivery Address
             Text(
               'Delivery Address',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2D2A26),
+              style: AppTextStyles.titleSmall.copyWith(
+                color: context.textPrimary,
               ),
             ),
-            const SizedBox(height: 8),
+            AppSpacing.gapSm,
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: AppSpacing.paddingLg,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 20,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                color: context.cardBackground,
+                borderRadius: AppRadius.lgRadius,
+                boxShadow: AppShadows.cardShadow,
               ),
               child: Column(
                 children: _addresses.map((address) {
@@ -109,7 +99,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: AppSpacing.paddingVerticalSm,
                       child: Row(
                         children: [
                           Container(
@@ -119,38 +109,37 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: isSelected
-                                    ? const Color(0xFF4E342E)
-                                    : const Color(0xFFE8E0DA),
+                                    ? context.primaryColor
+                                    : context.borderColor,
                                 width: 2,
                               ),
                             ),
                             child: isSelected
                                 ? Container(
                               margin: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF4E342E),
+                              decoration: BoxDecoration(
+                                color: context.primaryColor,
                                 shape: BoxShape.circle,
                               ),
                             )
                                 : null,
                           ),
-                          const SizedBox(width: 12),
+                          AppSpacing.gapHorizontalMd,
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   address['label']!,
-                                  style: GoogleFonts.poppins(
+                                  style: AppTextStyles.bodyMedium.copyWith(
                                     fontWeight: FontWeight.w500,
-                                    color: const Color(0xFF2D2A26),
+                                    color: context.textPrimary,
                                   ),
                                 ),
                                 Text(
                                   address['details']!,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    color: const Color(0xFF7D6E63),
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: context.textSecondary,
                                   ),
                                 ),
                               ],
@@ -162,7 +151,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               width: 20,
                               height: 20,
                               colorFilter: const ColorFilter.mode(
-                                Color(0xFF4CAF50),
+                                AppColors.success,
                                 BlendMode.srcIn,
                               ),
                             ),
@@ -173,19 +162,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 }).toList(),
               ),
             ),
-            const SizedBox(height: 16),
+            AppSpacing.gapLg,
             // Delivery Time
             Text(
               'Delivery Time',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2D2A26),
+              style: AppTextStyles.titleSmall.copyWith(
+                color: context.textPrimary,
               ),
             ),
-            const SizedBox(height: 8),
+            AppSpacing.gapSm,
             Wrap(
-              spacing: 8,
+              spacing: AppSpacing.sm,
               children: _deliveryTimes.map((time) {
                 final isSelected = time == _selectedTime;
                 return GestureDetector(
@@ -196,54 +183,46 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.sm,
                     ),
                     decoration: BoxDecoration(
                       color:
-                      isSelected ? const Color(0xFF4E342E) : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      isSelected ? context.primaryColor : context.cardBackground,
+                      borderRadius: AppRadius.mdRadius,
                       border: Border.all(
                         color: isSelected
-                            ? const Color(0xFF4E342E)
-                            : const Color(0xFFE8E0DA),
+                            ? context.primaryColor
+                            : context.borderColor,
                       ),
                     ),
                     child: Text(
                       time,
-                      style: GoogleFonts.poppins(
+                      style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w500,
                         color:
-                        isSelected ? Colors.white : const Color(0xFF7D6E63),
+                        isSelected ? Colors.white : context.textSecondary,
                       ),
                     ),
                   ),
                 );
               }).toList(),
             ),
-            const SizedBox(height: 16),
+            AppSpacing.gapLg,
             // Order Summary
             Text(
               'Order Summary',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2D2A26),
+              style: AppTextStyles.titleSmall.copyWith(
+                color: context.textPrimary,
               ),
             ),
-            const SizedBox(height: 8),
+            AppSpacing.gapSm,
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: AppSpacing.paddingLg,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 20,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                color: context.cardBackground,
+                borderRadius: AppRadius.lgRadius,
+                boxShadow: AppShadows.cardShadow,
               ),
               child: Column(
                 children: [
@@ -252,34 +231,34 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     children: [
                       Text(
                         '${_cartItems.length} items',
-                        style: GoogleFonts.poppins(
-                          color: const Color(0xFF7D6E63),
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: context.textSecondary,
                         ),
                       ),
                       Text(
                         '\$${subtotal.toStringAsFixed(2)}',
-                        style: GoogleFonts.poppins(
+                        style: AppTextStyles.bodyMedium.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFF2D2A26),
+                          color: context.textPrimary,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  AppSpacing.gapXs,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Delivery Fee',
-                        style: GoogleFonts.poppins(
-                          color: const Color(0xFF7D6E63),
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: context.textSecondary,
                         ),
                       ),
                       Text(
                         '\$${deliveryFee.toStringAsFixed(2)}',
-                        style: GoogleFonts.poppins(
+                        style: AppTextStyles.bodyMedium.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFF2D2A26),
+                          color: context.textPrimary,
                         ),
                       ),
                     ],
@@ -290,18 +269,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     children: [
                       Text(
                         'Total',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
+                        style: AppTextStyles.titleSmall.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF2D2A26),
+                          color: context.textPrimary,
                         ),
                       ),
                       Text(
                         '\$${total.toStringAsFixed(2)}',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
+                        style: AppTextStyles.titleSmall.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF4E342E),
+                          color: context.primaryColor,
                         ),
                       ),
                     ],
